@@ -90,14 +90,18 @@ $msg = '';
             <div class="full-row">
                 <div class="d-flex justify-content-center align-items-center">
             
-                   
                         <div class="col-lg-5 col-md-6 border d-flex justify-content-center align-items-center ">
-                            <?php
+                          
+                          <?php
                                 $query = mysqli_query($con, "SELECT * FROM meetings LEFT JOIN user ON user.id = meetings.tid WHERE role='Caretaker' and mid=$mid;");
                                 $row = mysqli_fetch_assoc($query);
                             ?>
-                                <div class="user-info my-4 mt-md-50"> <img src="./uploads/<?php echo $row['img']; ?>" style="width: 120px ;height:100px;border-radius:50%;" alt="userimage">
-                                    <div class="mb-4 mt-3">
+                                <div class="user-info my-4 mt-md-50">
+                   <h3 class="text-center"> Elder People Request</h3>
+<hr>
+                                     <img src="./uploads/<?php echo $row['img']; ?>" style="width: 120px ;height:100px;border-radius:50%;" alt="userimage">
+                                   
+                                <div class="mb-4 mt-3">
 
                                     </div>
 
@@ -107,13 +111,77 @@ $msg = '';
                                         <div class="mb-1 text-capitalize"><b>Role:</b> <?php echo $row['role']; ?></div>
                                 <?php 
                                
-?>
+                                        ?><style>
+                                                                .btncls{
+                                                                    background-color: #ff00004d;
+                                                                color: #000000a8;
+                                                                letter-spacing: 2px;
+                                                                font-size: 16px;
+                                                                padding: 0px 12px;
+                                                                border-radius: 10px;
+                                                                }
+                                                                .btncls2{
+                                                                    background-color: #00ff014d;
+                                                                color: #000000a8;
+                                                                letter-spacing: 2px;
+                                                                font-size: 16px;
+                                                                padding: 0px 12px;
+                                                                border-radius: 10px;
+                                                                }
+                                                                .btncls3{
+                                                                    background-color: #98ccff9c;
+                                                                color: #000000a8;
+                                                                letter-spacing: 2px;
+                                                                font-size: 16px;
+                                                                padding: 0px 12px;
+                                                                border-radius: 10px;
+                                                                }
+                                            </style>
                                         <div class="mb-1 text-capitalize"><b>Date:</b> <?php echo $row['date']; ?></div>
                                         <div class="mb-1 text-capitalize"><b>Subject:</b> <?php echo $row['subject']; ?></div>
                                         <div class="mb-1 text-capitalize"><b>Description:</b> <?php echo $row['description']; ?></div>
-                                        <!-- <div class="mb-1 text-capitalize"><b>Address:</b> <?php echo $row['location']; ?></div> -->
-                                        <!-- <div class="mb-1 text-capitalize"><b>Services:</b> <?php echo $row['Service']; ?></div> -->
+                                        <div class="mb-1 text-capitalize">
+                                            <?php 
+                                            // UPDATE `meetings` SET `accept` = '1' WHERE `meetings`.`mid` = 3;
+                                            $accept=(int)$row['description'];
+                                            if(isset($_POST['request_'])){
+                                                $accept= $_POST['accept'];
+                                                $status= $_POST['status'];
+                                                if((int)$accept===1){
+                                                    $accept=0;
+                                                }else{
+                                                    $accept=1;
 
+                                                }
+                                                if((int)$status===1){
+                                                    $status=0;
+                                                }else{
+                                                    $status=1;
+
+                                                }
+                                                mysqli_query($con,"UPDATE `meetings` SET `accept` = '$accept',`status` = '$status' WHERE `meetings`.`mid` = $mid");
+                                            }
+                                            ?>
+                                            <form method="post">
+                                                <input type="number" hidden name="accept"  value="<?php echo $row['accept'];?>">
+                                                <input type="number" hidden name="status"value="<?php echo $row['status'];?>">
+                                                <?php if($accept===1){
+                                                    ?>
+                                            <button class="m-2 btncls" name="request_">Reject</button>
+                                                    <?php
+                                                    
+                                                }else{
+                                                    ?>
+                                            <button class="m-2 btncls2" name="request_">Accept</button>
+
+                                                    <?php
+                                                    
+                                                }?>
+                                            <!-- <button class="m-2 btncls3">A</button> -->
+                                              </from>
+
+                                        </div>
+                                      
 <?php
                                 
 ?>
